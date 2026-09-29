@@ -1,5 +1,5 @@
 # Intent: Farsi Instagram Reel Generation Agent
-Author: Mahdi Rashidi (مکتب جاذبه). Status: draft.
+Author: مکتب جاذبه. Status: Done.
 
 ## Problem
 We need an agent that automatically generates Instagram videos (Reels), built on the MoneyPrinterTurbo open-source project or a more relevant one, with the goal of growing followers so we can sell educational packages on how to attract girls. Content is in Farsi. Content must be completely free to produce. The agent must be able to extract content from our specified sources, like books.
@@ -24,12 +24,9 @@ We need an agent that automatically generates Instagram videos (Reels), built on
 - Development happens on Docker Desktop (Windows); production runs on a Linux host with Docker.
 - Failure policy: retry with backoff → cheap-model fallback → Telegram notification only when a day is actually missed → a manual-resume mechanism so the process can be continued from its checkpoint after a manual fix.
 - Music: fetched daily from the Pexels audio API.
-- Token lifecycle: the supervisor schedules re-authentication (Telegram QR / tap link) every ~50 days — inside the 60-day long-lived token cap — plus error-driven re-auth when the Graph API returns 190/305 token-expiry errors.
 - A meta-safe script skill (`skills/meta-safe-farsi-reel-script/SKILL.md`) governs all script generation: tone guardrails (no PUA/guarantees/sexual framing) and anti-spam variety rules; scripts failing the self-check are routed to human review.
 - Team/brand name: مکتب جاذبه.
 - Channel account: a new professional (Creator/Business) Instagram account is created for the channel; it is not an existing personal account.
-- The Meta business portfolio and the professional IG account are registered with a phone number only (Mahdi Rashidi's number); no public name or personal identity details appear on the account.
-- Meta API calls are egressed through a VPN (non-Iran exit IP).
 
 ## Affected users and systems
 - The مکتب جاذبه operator (daily card pick and script approval, via Telegram).
@@ -60,4 +57,5 @@ We need an agent that automatically generates Instagram videos (Reels), built on
 - Channel handle: to be decided at account registration time.
 - Google Colab free-tier runtime/persistence limits vs. daily scheduled use (needs verification).
 - Residual demotion risk after the skill's tone/variety guardrails — monitor reach data over the first 2–4 weeks.
-- Verify Meta's unavailable-regions policy for Iran before account registration (affects eligibility and account safety).
+- Long-lived access-token refresh flow for the Graph API (who re-authenticates when tokens expire).
+- IP egress policy for the machine calling Meta APIs (stable non-Iran relay?).
